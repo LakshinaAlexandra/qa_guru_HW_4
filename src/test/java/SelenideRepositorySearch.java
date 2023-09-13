@@ -19,6 +19,19 @@ public class SelenideRepositorySearch {
 
         $$(".markdown-body h4").filterBy(text("Using JUnit5 extend test class:")).shouldHave(size(1));
         $$(".markdown-body h4").filterBy(text("Using JUnit5 extend test class:")).
-                first().sibling(0).$("pre").shouldHave(text("Test"));
+                first().sibling(0).$("pre").shouldHave(text(
+                """
+                        @ExtendWith({SoftAssertsExtension.class})
+                        class Tests {
+                          @Test
+                          void test() {
+                            Configuration.assertionMode = SOFT;
+                            open("page.html");
+                                                
+                            $("#first").should(visible).click();
+                            $("#second").should(visible).click();
+                          }
+                        }
+                        """));
     }
 }
